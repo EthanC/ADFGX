@@ -31,6 +31,7 @@ namespace ADFGX_Cloud_Solver
         /// </summary>
         private void Form1_Load(object sender, EventArgs e)
         {
+
             //Start Inital BackgroundWorker Thread and call to Server
             InitServerWorker.RunWorkerAsync();
         }
