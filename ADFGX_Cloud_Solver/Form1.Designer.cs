@@ -34,6 +34,10 @@
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.statuslbl = new System.Windows.Forms.ToolStripStatusLabel();
             this.Pbar = new System.Windows.Forms.ToolStripProgressBar();
+            this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.KeysTried = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabel4 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.GoodKeys = new System.Windows.Forms.ToolStripStatusLabel();
             this.tabber = new System.Windows.Forms.TabControl();
             this.MainPage = new System.Windows.Forms.TabPage();
             this.Description = new System.Windows.Forms.Label();
@@ -58,10 +62,6 @@
             this.UpdateLogTimer = new System.Windows.Forms.Timer(this.components);
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.KeysTried = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripStatusLabel4 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.GoodKeys = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusStrip1.SuspendLayout();
             this.tabber.SuspendLayout();
             this.MainPage.SuspendLayout();
@@ -112,6 +112,32 @@
             this.Pbar.Name = "Pbar";
             this.Pbar.Size = new System.Drawing.Size(100, 24);
             this.Pbar.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
+            // 
+            // toolStripStatusLabel2
+            // 
+            this.toolStripStatusLabel2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
+            this.toolStripStatusLabel2.Size = new System.Drawing.Size(178, 25);
+            this.toolStripStatusLabel2.Text = "Approx. Keys Tried:";
+            // 
+            // KeysTried
+            // 
+            this.KeysTried.Name = "KeysTried";
+            this.KeysTried.Size = new System.Drawing.Size(112, 25);
+            this.KeysTried.Text = "0000000000";
+            // 
+            // toolStripStatusLabel4
+            // 
+            this.toolStripStatusLabel4.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.toolStripStatusLabel4.Name = "toolStripStatusLabel4";
+            this.toolStripStatusLabel4.Size = new System.Drawing.Size(108, 25);
+            this.toolStripStatusLabel4.Text = "Good Keys:";
+            // 
+            // GoodKeys
+            // 
+            this.GoodKeys.Name = "GoodKeys";
+            this.GoodKeys.Size = new System.Drawing.Size(42, 25);
+            this.GoodKeys.Text = "000";
             // 
             // tabber
             // 
@@ -367,32 +393,6 @@
             this.pictureBox1.TabIndex = 43;
             this.pictureBox1.TabStop = false;
             // 
-            // toolStripStatusLabel2
-            // 
-            this.toolStripStatusLabel2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
-            this.toolStripStatusLabel2.Size = new System.Drawing.Size(178, 25);
-            this.toolStripStatusLabel2.Text = "Approx. Keys Tried:";
-            // 
-            // KeysTried
-            // 
-            this.KeysTried.Name = "KeysTried";
-            this.KeysTried.Size = new System.Drawing.Size(112, 25);
-            this.KeysTried.Text = "0000000000";
-            // 
-            // toolStripStatusLabel4
-            // 
-            this.toolStripStatusLabel4.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.toolStripStatusLabel4.Name = "toolStripStatusLabel4";
-            this.toolStripStatusLabel4.Size = new System.Drawing.Size(108, 25);
-            this.toolStripStatusLabel4.Text = "Good Keys:";
-            // 
-            // GoodKeys
-            // 
-            this.GoodKeys.Name = "GoodKeys";
-            this.GoodKeys.Size = new System.Drawing.Size(42, 25);
-            this.GoodKeys.Text = "000";
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(144F, 144F);
@@ -409,7 +409,7 @@
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
-            this.Text = "ADFGX Cloud Factoring Application v2";
+            this.Text = "ADFGX Cloud Factoring Application v3";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();

@@ -83,7 +83,7 @@ namespace ADFGX_Cloud_Solver
             }
             else
             {
-                if (retVer != "2")
+                if (retVer != "3")
                 {
                     MessageBox.Show("A new version of the application has been released, thus running this version would be a waste. When exiting this messagebox the new version will be downloaded and ran.", "ADFGX Cloud Factoring App");
                     System.Net.WebClient myWebClient = new System.Net.WebClient();
@@ -126,7 +126,7 @@ namespace ADFGX_Cloud_Solver
                 //Get Score of the return by calculating the English Ngram Frequencies in it
                 var Sscore = GenericScoring.ngram_score.ScoreDouble(ret);
                 //If the Score in above -120 (Average English Ngram Score for a 34 length Sentence), send to server
-                if (Sscore > -260)
+                if (Sscore > -280)
                     {
                         GoodCount++;
                         ADFGXserv.SetData(ret, C_Aplha, Convert.ToInt32(Sscore), ContributerName);
@@ -170,6 +170,31 @@ namespace ADFGX_Cloud_Solver
                 this.resultsText.Invoke(new MethodInvoker(delegate () { this.resultsText.Text = "An error occured while attempting to contact server! Please contact TheRealDecrypterfixer@gmail.com to report the below error..." + Environment.NewLine + Environment.NewLine + retTop; }));
             else
                 this.resultsText.Invoke(new MethodInvoker(delegate () { this.resultsText.Text = retTop; }));
+
+            //Gets the Version information from Server and exits if the Version is incorrect
+            retVer = ADFGXserv.GetVersion();
+            if (retVer.Contains("ERROR:"))
+            {
+                MessageBox.Show("An error occured while attempting to check the version of the application with the server. This is commonly because of a lack of internet connection. This application needs the internet to run. If this error continues after being connected, please ensure you can view the site http://fascinatinginformation.com/ and contact TheRealDecrypterFixer@gmail.com" + Environment.NewLine + Environment.NewLine + retVer, "ADFGX Cloud Factoring App");
+                Environment.Exit(0);
+            }
+            else if (retVer == "")
+            {
+                MessageBox.Show("An error occured while attempting to check the version of the application with the server. This is commonly because of a lack of internet connection. This application needs the internet to run. If this error continues after being connected, please ensure you can view the site http://fascinatinginformation.com/ and contact TheRealDecrypterFixer@gmail.com . Exiting application to avoid wasting resources.", "ADFGX Cloud Factoring App");
+                Environment.Exit(0);
+            }
+            else
+            {
+                if (retVer != "3")
+                {
+                    cts.Cancel();
+                    MessageBox.Show("A new version of the application has been released, thus running this version would be a waste. When exiting this messagebox the new version will be downloaded and ran.", "ADFGX Cloud Factoring App");
+                    System.Net.WebClient myWebClient = new System.Net.WebClient();
+                    myWebClient.DownloadFile("http://fascinatinginformation.com/ADFGX_Cloud_Solver.exe", "ADFGX_Cloud_Solver_" + retVer + ".exe");
+                    System.Diagnostics.Process.Start("ADFGX_Cloud_Solver_" + retVer + ".exe");
+                    Environment.Exit(0);
+                }
+            }
 
         }
 
