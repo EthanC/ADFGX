@@ -18,7 +18,7 @@ namespace ADFGX_Cloud_Solver
         public static double BestScore = -99999;
         public static string CPUperc = "HIGH";
         public static System.Threading.CancellationTokenSource cts = new System.Threading.CancellationTokenSource();
-		public static long nAttempts = 0;
+        public static long nAttempts = 0;
 
         public Form1()
         {
@@ -114,25 +114,25 @@ namespace ADFGX_Cloud_Solver
                 Parallel.ForEach(Infinite(), opts, new Action<bool>((val) =>
                 {
                     opts.CancellationToken.ThrowIfCancellationRequested();
-					//Shuffle the Alphabet and get a random Cipher Key
-					string C_Aplha = Alpha.Shuffle();
-					//Decipher the ciphertext by Substitution
-					var ret = SubstitutionSolve(Cipher, C_Aplha);
-					//Get Score of the return by calculating the English Ngram Frequencies in it
-					var Sscore = GenericScoring.ngram_score.Score(ret);
-					//If the Score in above -120 (Average English Ngram Score for a 34 length Sentence), send to server
-					if (Sscore > -120)
+                    //Shuffle the Alphabet and get a random Cipher Key
+                    string C_Aplha = Alpha.Shuffle();
+                    //Decipher the ciphertext by Substitution
+                    var ret = SubstitutionSolve(Cipher, C_Aplha);
+                    //Get Score of the return by calculating the English Ngram Frequencies in it
+                    var Sscore = GenericScoring.ngram_score.Score(ret);
+                    //If the Score in above -120 (Average English Ngram Score for a 34 length Sentence), send to server
+                    if (Sscore > -120)
                     {
                         ADFGXserv.SetData(ret, C_Aplha, Convert.ToInt32(Sscore), ContributerName);
                     }
-					//Log best score so far for UI log
-					if (Sscore > BestScore)
+                    //Log best score so far for UI log
+                    if (Sscore > BestScore)
                     {
                         BestScore = Sscore;
                         GlobalUpdateString = "Your Best Score So Far: " + Environment.NewLine + "Key: " + C_Aplha + Environment.NewLine + "Result: " + ret + Environment.NewLine + "Score: " + Sscore;
                     }
 
-					nAttempts++;
+                    nAttempts++;
                 }));
             }//Catch when user cancels the process by hitting the stop button.
             catch (OperationCanceledException ex)
@@ -174,7 +174,7 @@ namespace ADFGX_Cloud_Solver
         private void UpdateLogTimer_Tick(object sender, EventArgs e)
         {
             this.LogText.Invoke(new MethodInvoker(delegate () { this.LogText.Text = GlobalUpdateString; }));
-			this.statusStrip1.Invoke(new MethodInvoker(delegate() { this.toolStripStatusLabel3.Text = nAttempts.ToString("N0"); }));
+            this.statusStrip1.Invoke(new MethodInvoker(delegate() { this.toolStripStatusLabel3.Text = nAttempts.ToString("N0"); }));
         }
 
         /// <summary>
@@ -200,8 +200,8 @@ namespace ADFGX_Cloud_Solver
             //Start the Main Brute Forcing Method
             BruteForceWorker.RunWorkerAsync();
             Pbar.Visible = true;
-			toolStripStatusLabel2.Visible = true;
-			toolStripStatusLabel3.Visible = true;
+            toolStripStatusLabel2.Visible = true;
+            toolStripStatusLabel3.Visible = true;
             UpdateLogTimer.Start();
             statuslbl.ForeColor = Color.LimeGreen;
             statuslbl.Text = "Working...";
@@ -220,8 +220,8 @@ namespace ADFGX_Cloud_Solver
                 System.Threading.Thread.Sleep(100);
             } while (BruteForceWorker.IsBusy);
             Pbar.Visible = false;
-			toolStripStatusLabel2.Visible = false;
-			toolStripStatusLabel3.Visible = false;
+            toolStripStatusLabel2.Visible = false;
+            toolStripStatusLabel3.Visible = false;
             UpdateLogTimer.Stop();
             statuslbl.ForeColor = Color.Black;
             statuslbl.Text = "IDLE";
