@@ -12,12 +12,28 @@ namespace GenericScoring
     {
         // Holds all Ngrams and Frequency values in the supplied file.
         public static Dictionary<string, double> ngrams = new Dictionary<string, double>(StringComparer.InvariantCultureIgnoreCase);
+        public static Dictionary<string, double> trigrams = new Dictionary<string, double>(StringComparer.InvariantCultureIgnoreCase);
+        public static Dictionary<string, double> quadgrams = new Dictionary<string, double>(StringComparer.InvariantCultureIgnoreCase);
         // Length of the Ngram (Bigram, Trigram, Quadgram, etc.)
         public static int L = 0;
         // Total Sum of all the Frequency values in the supplied file.
         public static double N = 0;
         // Floor score to use when a Ngram doesn't exist.
         public static double Floor = 0;
+
+        // Length of the Ngram (Bigram, Trigram, Quadgram, etc.)
+        public static int L_quad = 0;
+        // Total Sum of all the Frequency values in the supplied file.
+        public static double N_quad = 0;
+        // Floor score to use when a Ngram doesn't exist.
+        public static double Floor_quad = 0;
+
+        // Length of the Ngram (Bigram, Trigram, Quadgram, etc.)
+        public static int L_tri = 0;
+        // Total Sum of all the Frequency values in the supplied file.
+        public static double N_tri = 0;
+        // Floor score to use when a Ngram doesn't exist.
+        public static double Floor_tri = 0;
 
         /// <summary>
         /// This function Loads the required Ngram file needed to score.
@@ -73,6 +89,75 @@ namespace GenericScoring
             return true;
         }
 
+        public static bool LoadNgarmDoubleFile(string TrigramDump, string QuadgramDump, char sep = ' ')
+        {
+            trigrams.Clear();
+            L_tri = 0;
+            N_tri = 0;
+            Floor_tri = 0;
+
+            quadgrams.Clear();
+            L_quad = 0;
+            N_quad = 0;
+            Floor_quad = 0;
+
+            string[] lines = TrigramDump.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None);
+            string[] lines2 = QuadgramDump.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None);
+
+            try
+            {
+                foreach (string line in lines)
+                {
+                    string key = "";
+                    int count = 0;
+                    string[] split = line.Split(sep);
+                    key = split[0];
+                    count = Convert.ToInt32(split[1]);
+                    trigrams.Add(key, count);
+                }
+
+                L_tri = 3;
+                N_tri = trigrams.Sum(x => x.Value);
+
+                foreach (var key in trigrams.Keys.ToArray())
+                {
+                    double d = trigrams[key] / N_tri;
+                    trigrams[key] = Math.Log10(d);
+                }
+                Floor = Math.Log10(0.01 / N_tri);
+
+
+
+                    foreach (string line in lines2)
+                    {
+                        string key = "";
+                        int count = 0;
+                        string[] split = line.Split(sep);
+                        key = split[0];
+                        count = Convert.ToInt32(split[1]);
+                        quadgrams.Add(key, count);
+                    }
+
+                    L_quad = 4;
+                    N_quad = quadgrams.Sum(x => x.Value);
+
+                    foreach (var key in quadgrams.Keys.ToArray())
+                    {
+                        double d = quadgrams[key] / N_quad;
+                        quadgrams[key] = Math.Log10(d);
+                    }
+                    Floor = Math.Log10(0.01 / N_quad);
+
+
+                }
+                catch
+                {
+                    return false;
+                }
+
+            return true;
+        }
+
         /// <summary>
         /// This function scores the supplied 'str' parameter against the Ngram file provided on the ngram_score Class init.
         /// </summary>
@@ -100,6 +185,41 @@ namespace GenericScoring
                 }
             }
             return Score;
+        }
+
+        public static double ScoreDouble(string str)
+        {
+            double TriScore = 0;
+            double QuadScore = 0;
+
+            foreach (var i in Xrange(str.Length - L_tri + 1))
+            {
+                string s = str.Substring((int)i, L_tri).ToUpper();
+                if (trigrams.ContainsKey(s))
+                {
+                    TriScore += trigrams[s];
+                }
+                else
+                {
+                    TriScore += Floor;
+                }
+            }
+
+            foreach (var i in Xrange(str.Length - L_quad + 1))
+            {
+                string s = str.Substring((int)i, L_quad).ToUpper();
+                if (quadgrams.ContainsKey(s))
+                {
+                    QuadScore += quadgrams[s];
+                }
+                else
+                {
+                    QuadScore += Floor;
+                }
+            }
+
+
+            return QuadScore + TriScore;
         }
 
         //A simple helper function, Xrange, which is normally a default Python function i converted to C#.

@@ -33,10 +33,14 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.statuslbl = new System.Windows.Forms.ToolStripStatusLabel();
+            this.Pbar = new System.Windows.Forms.ToolStripProgressBar();
             this.tabber = new System.Windows.Forms.TabControl();
             this.MainPage = new System.Windows.Forms.TabPage();
             this.Description = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.CPUlevel = new System.Windows.Forms.ComboBox();
+            this.ContribText = new System.Windows.Forms.TextBox();
+            this.ContribLabel = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.GPUCheck = new System.Windows.Forms.CheckBox();
             this.cmdStart = new System.Windows.Forms.Button();
@@ -51,13 +55,13 @@
             this.UpdateServerInfoTimer = new System.Windows.Forms.Timer(this.components);
             this.cmdCredit = new System.Windows.Forms.Label();
             this.BruteForceWorker = new System.ComponentModel.BackgroundWorker();
-            this.ContribLabel = new System.Windows.Forms.Label();
-            this.ContribText = new System.Windows.Forms.TextBox();
-            this.Pbar = new System.Windows.Forms.ToolStripProgressBar();
             this.UpdateLogTimer = new System.Windows.Forms.Timer(this.components);
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.CPUlevel = new System.Windows.Forms.ComboBox();
+            this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.KeysTried = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabel4 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.GoodKeys = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusStrip1.SuspendLayout();
             this.tabber.SuspendLayout();
             this.MainPage.SuspendLayout();
@@ -75,7 +79,11 @@
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1,
             this.statuslbl,
-            this.Pbar});
+            this.Pbar,
+            this.toolStripStatusLabel2,
+            this.KeysTried,
+            this.toolStripStatusLabel4,
+            this.GoodKeys});
             this.statusStrip1.Location = new System.Drawing.Point(0, 455);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
@@ -98,6 +106,12 @@
             this.statuslbl.Name = "statuslbl";
             this.statuslbl.Size = new System.Drawing.Size(47, 25);
             this.statuslbl.Text = "IDLE";
+            // 
+            // Pbar
+            // 
+            this.Pbar.Name = "Pbar";
+            this.Pbar.Size = new System.Drawing.Size(100, 24);
+            this.Pbar.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
             // 
             // tabber
             // 
@@ -156,6 +170,35 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Options";
             // 
+            // CPUlevel
+            // 
+            this.CPUlevel.FormattingEnabled = true;
+            this.CPUlevel.Items.AddRange(new object[] {
+            "LOW",
+            "HIGH"});
+            this.CPUlevel.Location = new System.Drawing.Point(116, 31);
+            this.CPUlevel.Name = "CPUlevel";
+            this.CPUlevel.Size = new System.Drawing.Size(121, 28);
+            this.CPUlevel.TabIndex = 1;
+            // 
+            // ContribText
+            // 
+            this.ContribText.Location = new System.Drawing.Point(513, 67);
+            this.ContribText.Name = "ContribText";
+            this.ContribText.Size = new System.Drawing.Size(168, 26);
+            this.ContribText.TabIndex = 0;
+            this.ContribText.Text = "UrRedditName";
+            // 
+            // ContribLabel
+            // 
+            this.ContribLabel.AutoSize = true;
+            this.ContribLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ContribLabel.Location = new System.Drawing.Point(6, 69);
+            this.ContribLabel.Name = "ContribLabel";
+            this.ContribLabel.Size = new System.Drawing.Size(501, 20);
+            this.ContribLabel.TabIndex = 53;
+            this.ContribLabel.Text = "Contributor Name (Used to identify what you contribute later):";
+            // 
             // label4
             // 
             this.label4.AutoSize = true;
@@ -194,7 +237,7 @@
             this.cmdQuit.Name = "cmdQuit";
             this.cmdQuit.Size = new System.Drawing.Size(116, 28);
             this.cmdQuit.TabIndex = 3;
-            this.cmdQuit.Text = "Quit";
+            this.cmdQuit.Text = "Stop";
             this.cmdQuit.UseVisualStyleBackColor = true;
             this.cmdQuit.Click += new System.EventHandler(this.cmdQuit_Click);
             // 
@@ -297,30 +340,6 @@
             this.BruteForceWorker.WorkerSupportsCancellation = true;
             this.BruteForceWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.BruteForceWorker_DoWork);
             // 
-            // ContribLabel
-            // 
-            this.ContribLabel.AutoSize = true;
-            this.ContribLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ContribLabel.Location = new System.Drawing.Point(6, 69);
-            this.ContribLabel.Name = "ContribLabel";
-            this.ContribLabel.Size = new System.Drawing.Size(501, 20);
-            this.ContribLabel.TabIndex = 53;
-            this.ContribLabel.Text = "Contributor Name (Used to identify what you contribute later):";
-            // 
-            // ContribText
-            // 
-            this.ContribText.Location = new System.Drawing.Point(513, 67);
-            this.ContribText.Name = "ContribText";
-            this.ContribText.Size = new System.Drawing.Size(168, 26);
-            this.ContribText.TabIndex = 0;
-            this.ContribText.Text = "UrRedditName";
-            // 
-            // Pbar
-            // 
-            this.Pbar.Name = "Pbar";
-            this.Pbar.Size = new System.Drawing.Size(100, 24);
-            this.Pbar.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
-            // 
             // UpdateLogTimer
             // 
             this.UpdateLogTimer.Interval = 5000;
@@ -348,16 +367,31 @@
             this.pictureBox1.TabIndex = 43;
             this.pictureBox1.TabStop = false;
             // 
-            // CPUlevel
+            // toolStripStatusLabel2
             // 
-            this.CPUlevel.FormattingEnabled = true;
-            this.CPUlevel.Items.AddRange(new object[] {
-            "LOW",
-            "HIGH"});
-            this.CPUlevel.Location = new System.Drawing.Point(116, 31);
-            this.CPUlevel.Name = "CPUlevel";
-            this.CPUlevel.Size = new System.Drawing.Size(121, 28);
-            this.CPUlevel.TabIndex = 1;
+            this.toolStripStatusLabel2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
+            this.toolStripStatusLabel2.Size = new System.Drawing.Size(178, 25);
+            this.toolStripStatusLabel2.Text = "Approx. Keys Tried:";
+            // 
+            // KeysTried
+            // 
+            this.KeysTried.Name = "KeysTried";
+            this.KeysTried.Size = new System.Drawing.Size(112, 25);
+            this.KeysTried.Text = "0000000000";
+            // 
+            // toolStripStatusLabel4
+            // 
+            this.toolStripStatusLabel4.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.toolStripStatusLabel4.Name = "toolStripStatusLabel4";
+            this.toolStripStatusLabel4.Size = new System.Drawing.Size(108, 25);
+            this.toolStripStatusLabel4.Text = "Good Keys:";
+            // 
+            // GoodKeys
+            // 
+            this.GoodKeys.Name = "GoodKeys";
+            this.GoodKeys.Size = new System.Drawing.Size(42, 25);
+            this.GoodKeys.Text = "000";
             // 
             // Form1
             // 
@@ -375,7 +409,7 @@
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
-            this.Text = "ADFGX Cloud Factoring Application";
+            this.Text = "ADFGX Cloud Factoring Application v2";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
@@ -425,6 +459,10 @@
         private System.Windows.Forms.ToolStripProgressBar Pbar;
         private System.Windows.Forms.Timer UpdateLogTimer;
         private System.Windows.Forms.ComboBox CPUlevel;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
+        private System.Windows.Forms.ToolStripStatusLabel KeysTried;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel4;
+        private System.Windows.Forms.ToolStripStatusLabel GoodKeys;
     }
 }
 

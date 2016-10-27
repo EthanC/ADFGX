@@ -17,6 +17,9 @@ namespace ADFGX_Cloud_Solver
         public static string GlobalUpdateString = "";
         public static double BestScore = -99999;
         public static string CPUperc = "HIGH";
+        public static string retVer = "";
+        public int TotalCount = 0;
+        public int GoodCount = 0;
         public static System.Threading.CancellationTokenSource cts = new System.Threading.CancellationTokenSource();
 
         public Form1()
@@ -31,7 +34,6 @@ namespace ADFGX_Cloud_Solver
         /// </summary>
         private void Form1_Load(object sender, EventArgs e)
         {
-
             //Start Inital BackgroundWorker Thread and call to Server
             InitServerWorker.RunWorkerAsync();
         }
@@ -68,7 +70,7 @@ namespace ADFGX_Cloud_Solver
                 Cipher = retCipher;
 
             //Gets the Version information from Server and exits if the Version is incorrect
-            var retVer = ADFGXserv.GetVersion();
+            retVer = ADFGXserv.GetVersion();
             if (retVer.Contains("ERROR:"))
             {
                 MessageBox.Show("An error occured while attempting to check the version of the application with the server. This is commonly because of a lack of internet connection. This application needs the internet to run. If this error continues after being connected, please ensure you can view the site http://fascinatinginformation.com/ and contact TheRealDecrypterFixer@gmail.com" + Environment.NewLine + Environment.NewLine + retVer, "ADFGX Cloud Factoring App");
@@ -81,9 +83,12 @@ namespace ADFGX_Cloud_Solver
             }
             else
             {
-                if (retVer != "1")
+                if (retVer != "2")
                 {
-                    MessageBox.Show("A new version of the application has been released. Please check the reddit post for the new app, or contact me at TheRealDecrypterFixer@gmail.com . Exiting application to avoid wasting resources.", "ADFGX Cloud Factoring App");
+                    MessageBox.Show("A new version of the application has been released, thus running this version would be a waste. When exiting this messagebox the new version will be downloaded and ran.", "ADFGX Cloud Factoring App");
+                    System.Net.WebClient myWebClient = new System.Net.WebClient();
+                    myWebClient.DownloadFile("http://fascinatinginformation.com/ADFGX_Cloud_Solver.exe", "ADFGX_Cloud_Solver_" + retVer + ".exe");
+                    System.Diagnostics.Process.Start("ADFGX_Cloud_Solver_" + retVer + ".exe");
                     Environment.Exit(0);
                 }
             }
@@ -106,7 +111,7 @@ namespace ADFGX_Cloud_Solver
             //Set Cancel Token for Brute Force Thread
             opts.CancellationToken = cts.Token;
             //Load Ngrams
-            GenericScoring.ngram_score.LoadNgarmFile(Properties.Resources.english_trigrams, 3);
+            GenericScoring.ngram_score.LoadNgarmDoubleFile(Properties.Resources.english_trigrams, Properties.Resources.english_quadgrams);
             //Start the Brute Forcing Loop
             try
             {
@@ -116,12 +121,14 @@ namespace ADFGX_Cloud_Solver
                 //Shuffle the Alphabet and get a random Cipher Key
                 string C_Aplha = Alpha.Shuffle();
                 //Decipher the ciphertext by Substitution
-                var ret = SubstitutionSolve(Cipher, C_Aplha);
+                var ret = Cipher.Substitute(C_Aplha);
+                        //------var ret = SubstitutionSolve(Cipher, C_Aplha);---//
                 //Get Score of the return by calculating the English Ngram Frequencies in it
-                var Sscore = GenericScoring.ngram_score.Score(ret);
+                var Sscore = GenericScoring.ngram_score.ScoreDouble(ret);
                 //If the Score in above -120 (Average English Ngram Score for a 34 length Sentence), send to server
-                if (Sscore > -120)
+                if (Sscore > -260)
                     {
+                        GoodCount++;
                         ADFGXserv.SetData(ret, C_Aplha, Convert.ToInt32(Sscore), ContributerName);
                     }
                 //Log best score so far for UI log
@@ -130,6 +137,7 @@ namespace ADFGX_Cloud_Solver
                         BestScore = Sscore;
                         GlobalUpdateString = "Your Best Score So Far: " + Environment.NewLine + "Key: " + C_Aplha + Environment.NewLine + "Result: " + ret + Environment.NewLine + "Score: " + Sscore;
                     }
+                    TotalCount++;
                 }));
             }//Catch when user cancels the process by hitting the stop button.
             catch (OperationCanceledException ex)
@@ -171,6 +179,8 @@ namespace ADFGX_Cloud_Solver
         private void UpdateLogTimer_Tick(object sender, EventArgs e)
         {
             this.LogText.Invoke(new MethodInvoker(delegate () { this.LogText.Text = GlobalUpdateString; }));
+            this.statusStrip1.Invoke(new MethodInvoker(delegate () { this.GoodKeys.Text = GoodCount.ToString(); }));
+            this.statusStrip1.Invoke(new MethodInvoker(delegate () { this.KeysTried.Text = TotalCount.ToString(); }));
         }
 
         /// <summary>
@@ -297,6 +307,16 @@ namespace ADFGX_Cloud_Solver
                 array[n] = value;
             }
             return new string(array);
+        }
+
+        public static string Substitute(this string s, string newAlphabet, string alphabet = "ABCDEFGHIKLMNOPQRSTUVWXYZ")
+        {
+            char[] result = new char[s.Length];
+            for (int i = 0; i < s.Length; i++)
+            {
+                result[i] = newAlphabet[alphabet.IndexOf(s[i])];
+            }
+            return new string(result);
         }
     }
 }
