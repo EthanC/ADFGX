@@ -18,7 +18,7 @@ namespace ADFGX_Cloud_Solver
         public static double BestScore = -99999;
         public static string CPUperc = "HIGH";
         public static string retVer = "";
-        public int TotalCount = 0;
+        public long TotalCount = 0;
         public int GoodCount = 0;
         public static System.Threading.CancellationTokenSource cts = new System.Threading.CancellationTokenSource();
 
@@ -34,6 +34,9 @@ namespace ADFGX_Cloud_Solver
         /// </summary>
         private void Form1_Load(object sender, EventArgs e)
         {
+            ContributerName = Properties.Settings.Default.ContributerName;
+            ContribText.Text = ContributerName;
+
             //Start Inital BackgroundWorker Thread and call to Server
             InitServerWorker.RunWorkerAsync();
         }
@@ -205,7 +208,7 @@ namespace ADFGX_Cloud_Solver
         {
             this.LogText.Invoke(new MethodInvoker(delegate () { this.LogText.Text = GlobalUpdateString; }));
             this.statusStrip1.Invoke(new MethodInvoker(delegate () { this.GoodKeys.Text = GoodCount.ToString(); }));
-            this.statusStrip1.Invoke(new MethodInvoker(delegate () { this.KeysTried.Text = TotalCount.ToString(); }));
+            this.statusStrip1.Invoke(new MethodInvoker(delegate () { this.KeysTried.Text = TotalCount.ToString("N0"); }));
         }
 
         /// <summary>
@@ -222,6 +225,8 @@ namespace ADFGX_Cloud_Solver
         /// </summary>
         private void cmdStart_Click(object sender, EventArgs e)
         {
+            if (BruteForceWorker.IsBusy) return;
+
             cts = new System.Threading.CancellationTokenSource();
             CPUperc = CPUlevel.Text;
             if (ContribText.Text == "UrRedditName")
@@ -307,6 +312,12 @@ namespace ADFGX_Cloud_Solver
         }
 
         #endregion
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Properties.Settings.Default.ContributerName = ContributerName;
+            Properties.Settings.Default.Save();
+        }
 
     }
 
