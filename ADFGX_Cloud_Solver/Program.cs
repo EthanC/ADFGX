@@ -20,7 +20,7 @@ namespace ADFGX_Cloud_Solver
                     SetProcessDPIAware();
             }
 
-                System.IO.File.WriteAllText("ADFGX_Cloud_Solver.exe.config", Properties.Resources.ADFGX_Cloud_Solver_exe);
+            System.IO.File.WriteAllText("ADFGX_Cloud_Solver.exe.config", Properties.Resources.ADFGX_Cloud_Solver_exe);
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
