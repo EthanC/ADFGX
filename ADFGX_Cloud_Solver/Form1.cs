@@ -34,6 +34,9 @@ namespace ADFGX_Cloud_Solver
         /// </summary>
         private void Form1_Load(object sender, EventArgs e)
         {
+            ContributerName = Properties.Settings.Default.ContributerName;
+            ContribText.Text = ContributerName;
+
             //Start Inital BackgroundWorker Thread and call to Server
             InitServerWorker.RunWorkerAsync();
         }
@@ -282,6 +285,12 @@ namespace ADFGX_Cloud_Solver
         }
 
         #endregion
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Properties.Settings.Default.ContributerName = ContributerName;
+            Properties.Settings.Default.Save();
+        }
 
     }
 
