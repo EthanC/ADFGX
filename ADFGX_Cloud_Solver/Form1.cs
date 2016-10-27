@@ -18,7 +18,7 @@ namespace ADFGX_Cloud_Solver
         public static double BestScore = -99999;
         public static string CPUperc = "HIGH";
         public static string retVer = "";
-        public int TotalCount = 0;
+        public long TotalCount = 0;
         public int GoodCount = 0;
         public static System.Threading.CancellationTokenSource cts = new System.Threading.CancellationTokenSource();
 
@@ -183,7 +183,7 @@ namespace ADFGX_Cloud_Solver
         {
             this.LogText.Invoke(new MethodInvoker(delegate () { this.LogText.Text = GlobalUpdateString; }));
             this.statusStrip1.Invoke(new MethodInvoker(delegate () { this.GoodKeys.Text = GoodCount.ToString(); }));
-            this.statusStrip1.Invoke(new MethodInvoker(delegate () { this.KeysTried.Text = TotalCount.ToString(); }));
+            this.statusStrip1.Invoke(new MethodInvoker(delegate () { this.KeysTried.Text = TotalCount.ToString("N0"); }));
         }
 
         /// <summary>
