@@ -225,6 +225,8 @@ namespace ADFGX_Cloud_Solver
         /// </summary>
         private void cmdStart_Click(object sender, EventArgs e)
         {
+            if (BruteForceWorker.IsBusy) return;
+
             cts = new System.Threading.CancellationTokenSource();
             CPUperc = CPUlevel.Text;
             if (ContribText.Text == "UrRedditName")
