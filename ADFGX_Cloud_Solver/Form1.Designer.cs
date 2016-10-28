@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.statuslbl = new System.Windows.Forms.ToolStripStatusLabel();
@@ -52,7 +52,7 @@
             this.LogLabel = new System.Windows.Forms.Label();
             this.LogText = new System.Windows.Forms.TextBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.s = new System.Windows.Forms.DataGridView();
+            this.dgvTopResults = new System.Windows.Forms.DataGridView();
             this.Rank = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.From = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.NewsPage = new System.Windows.Forms.TabPage();
@@ -73,7 +73,7 @@
             this.MainPage.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tabPage2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.s)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvTopResults)).BeginInit();
             this.NewsPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -302,7 +302,7 @@
             // 
             // tabPage2
             // 
-            this.tabPage2.Controls.Add(this.s);
+            this.tabPage2.Controls.Add(this.dgvTopResults);
             this.tabPage2.Location = new System.Drawing.Point(4, 25);
             this.tabPage2.Margin = new System.Windows.Forms.Padding(2);
             this.tabPage2.Name = "tabPage2";
@@ -312,37 +312,37 @@
             this.tabPage2.Text = "Top Results";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // s
+            // dgvTopResults
             // 
-            this.s.AllowUserToAddRows = false;
-            this.s.AllowUserToDeleteRows = false;
-            this.s.AllowUserToResizeRows = false;
-            this.s.AutoGenerateColumns = false;
-            this.s.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.s.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dgvTopResults.AllowUserToAddRows = false;
+            this.dgvTopResults.AllowUserToDeleteRows = false;
+            this.dgvTopResults.AllowUserToResizeRows = false;
+            this.dgvTopResults.AutoGenerateColumns = false;
+            this.dgvTopResults.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvTopResults.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Rank,
             this.scoreDataGridViewTextBoxColumn,
             this.From,
             this.keyDataGridViewTextBoxColumn,
             this.dateDataGridViewTextBoxColumn});
-            this.s.DataBindings.Add(new System.Windows.Forms.Binding("Tag", this.resultBindingSource, "Timestamp", true, System.Windows.Forms.DataSourceUpdateMode.OnValidation, null, "F"));
-            this.s.DataSource = this.resultBindingSource;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.s.DefaultCellStyle = dataGridViewCellStyle2;
-            this.s.Location = new System.Drawing.Point(0, 0);
-            this.s.Name = "s";
-            this.s.ReadOnly = true;
-            this.s.RowHeadersVisible = false;
-            this.s.ShowEditingIcon = false;
-            this.s.ShowRowErrors = false;
-            this.s.Size = new System.Drawing.Size(545, 204);
-            this.s.TabIndex = 0;
+            this.dgvTopResults.DataBindings.Add(new System.Windows.Forms.Binding("Tag", this.resultBindingSource, "Timestamp", true, System.Windows.Forms.DataSourceUpdateMode.OnValidation, null, "F"));
+            this.dgvTopResults.DataSource = this.resultBindingSource;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvTopResults.DefaultCellStyle = dataGridViewCellStyle1;
+            this.dgvTopResults.Location = new System.Drawing.Point(0, 0);
+            this.dgvTopResults.Name = "dgvTopResults";
+            this.dgvTopResults.ReadOnly = true;
+            this.dgvTopResults.RowHeadersVisible = false;
+            this.dgvTopResults.ShowEditingIcon = false;
+            this.dgvTopResults.ShowRowErrors = false;
+            this.dgvTopResults.Size = new System.Drawing.Size(545, 204);
+            this.dgvTopResults.TabIndex = 0;
             // 
             // Rank
             // 
@@ -355,12 +355,11 @@
             // 
             // From
             // 
-            this.From.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.From.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.From.DataPropertyName = "From";
             this.From.HeaderText = "User";
             this.From.Name = "From";
             this.From.ReadOnly = true;
-            this.From.Width = 120;
             // 
             // NewsPage
             // 
@@ -458,19 +457,21 @@
             // 
             // keyDataGridViewTextBoxColumn
             // 
-            this.keyDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.keyDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.keyDataGridViewTextBoxColumn.DataPropertyName = "Key";
             this.keyDataGridViewTextBoxColumn.HeaderText = "Key";
             this.keyDataGridViewTextBoxColumn.Name = "keyDataGridViewTextBoxColumn";
             this.keyDataGridViewTextBoxColumn.ReadOnly = true;
+            this.keyDataGridViewTextBoxColumn.Width = 60;
             // 
             // dateDataGridViewTextBoxColumn
             // 
+            this.dateDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.dateDataGridViewTextBoxColumn.DataPropertyName = "Date";
             this.dateDataGridViewTextBoxColumn.HeaderText = "Date";
             this.dateDataGridViewTextBoxColumn.Name = "dateDataGridViewTextBoxColumn";
             this.dateDataGridViewTextBoxColumn.ReadOnly = true;
-            this.dateDataGridViewTextBoxColumn.Width = 90;
+            this.dateDataGridViewTextBoxColumn.Width = 67;
             // 
             // resultBindingSource
             // 
@@ -503,7 +504,7 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.s)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvTopResults)).EndInit();
             this.NewsPage.ResumeLayout(false);
             this.NewsPage.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
@@ -546,7 +547,7 @@
         private System.Windows.Forms.ToolStripStatusLabel KeysTried;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel4;
         private System.Windows.Forms.ToolStripStatusLabel GoodKeys;
-        private System.Windows.Forms.DataGridView s;
+        private System.Windows.Forms.DataGridView dgvTopResults;
         private System.Windows.Forms.BindingSource resultBindingSource;
         private System.Windows.Forms.DataGridViewTextBoxColumn Rank;
         private System.Windows.Forms.DataGridViewTextBoxColumn scoreDataGridViewTextBoxColumn;
