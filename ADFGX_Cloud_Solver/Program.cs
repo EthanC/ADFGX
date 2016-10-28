@@ -13,7 +13,7 @@ namespace ADFGX_Cloud_Solver
         /// </summary>
         [STAThread]
         static void Main()
-        {
+         {
             if (!IsRunningOnMono())
             {
                 if (Environment.OSVersion.Version.Major >= 6)
