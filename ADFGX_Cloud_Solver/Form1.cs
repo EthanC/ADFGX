@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -21,10 +23,13 @@ namespace ADFGX_Cloud_Solver
         public int TotalCount = 0;
         public int GoodCount = 0;
         public static System.Threading.CancellationTokenSource cts = new System.Threading.CancellationTokenSource();
-
+        public bool running = false;
+        private BindingList<Result> resultList = new BindingList<Result>();
+        Regex resultRegex = new Regex(@"Return: (?'Return'\w{34}), CipherKey: (?'Key'\w{25}), Score: -?(?'Score'\d+), From: (?'From'.+), Date: (?'Date'\d{2}/\d{2}/\d{4}) (?'Time'\d+\:\d{2}\:\d{2} (?:A|P)M)");
         public Form1()
         {
             InitializeComponent();
+            s.DataSource = resultList;
             Pbar.Visible = false;
             CPUlevel.SelectedIndex = 0;
         }
@@ -56,9 +61,12 @@ namespace ADFGX_Cloud_Solver
             //Gets the Top20 results from Server and populates the Results Textbox
             var retTop = ADFGXserv.GetTop20();
             if (retTop.Contains("ERROR:"))
-                this.resultsText.Invoke(new MethodInvoker(delegate () { this.resultsText.Text = "An error occured while attempting to contact server! Please contact TheRealDecrypterfixer@gmail.com to report the below error..." + Environment.NewLine + Environment.NewLine + retTop; }));
+                this.s.Invoke(new MethodInvoker(delegate () { this.s.Text = "An error occured while attempting to contact server! Please contact TheRealDecrypterfixer@gmail.com to report the below error..." + Environment.NewLine + Environment.NewLine + retTop; }));
             else
-                this.resultsText.Invoke(new MethodInvoker(delegate () { this.resultsText.Text = retTop; }));
+                this.s.Invoke(new MethodInvoker(delegate ()
+                {
+                    processResults(retTop);
+                }));
 
             //Gets the currently being worked on Cipher
             var retCipher = ADFGXserv.GetCipher();
@@ -118,21 +126,21 @@ namespace ADFGX_Cloud_Solver
                 Parallel.ForEach(Infinite(), opts, new Action<bool>((val) =>
                 {
                     opts.CancellationToken.ThrowIfCancellationRequested();
-                //Shuffle the Alphabet and get a random Cipher Key
-                string C_Aplha = Alpha.Shuffle();
-                //Decipher the ciphertext by Substitution
-                var ret = Cipher.Substitute(C_Aplha);
-                        //------var ret = SubstitutionSolve(Cipher, C_Aplha);---//
-                //Get Score of the return by calculating the English Ngram Frequencies in it
-                var Sscore = GenericScoring.ngram_score.ScoreDouble(ret);
-                //If the Score in above -120 (Average English Ngram Score for a 34 length Sentence), send to server
-                if (Sscore > -280)
+                    //Shuffle the Alphabet and get a random Cipher Key
+                    string C_Aplha = Alpha.Shuffle();
+                    //Decipher the ciphertext by Substitution
+                    var ret = Cipher.Substitute(C_Aplha);
+                    //------var ret = SubstitutionSolve(Cipher, C_Aplha);---//
+                    //Get Score of the return by calculating the English Ngram Frequencies in it
+                    var Sscore = GenericScoring.ngram_score.ScoreDouble(ret);
+                    //If the Score in above -120 (Average English Ngram Score for a 34 length Sentence), send to server
+                    if (Sscore > -280)
                     {
                         GoodCount++;
                         ADFGXserv.SetData(ret, C_Aplha, Convert.ToInt32(Sscore), ContributerName);
                     }
-                //Log best score so far for UI log
-                if (Sscore > BestScore)
+                    //Log best score so far for UI log
+                    if (Sscore > BestScore)
                     {
                         BestScore = Sscore;
                         GlobalUpdateString = "Your Best Score So Far: " + Environment.NewLine + "Key: " + C_Aplha + Environment.NewLine + "Result: " + ret + Environment.NewLine + "Score: " + Sscore;
@@ -167,9 +175,9 @@ namespace ADFGX_Cloud_Solver
             //Gets the Top20 results from Server and populates the Results Textbox
             var retTop = ADFGXserv.GetTop20();
             if (retTop.Contains("ERROR:"))
-                this.resultsText.Invoke(new MethodInvoker(delegate () { this.resultsText.Text = "An error occured while attempting to contact server! Please contact TheRealDecrypterfixer@gmail.com to report the below error..." + Environment.NewLine + Environment.NewLine + retTop; }));
+                this.s.Invoke(new MethodInvoker(delegate () { this.s.Text = "An error occured while attempting to contact server! Please contact TheRealDecrypterfixer@gmail.com to report the below error..." + Environment.NewLine + Environment.NewLine + retTop; }));
             else
-                this.resultsText.Invoke(new MethodInvoker(delegate () { this.resultsText.Text = retTop; }));
+                this.s.Invoke(new MethodInvoker(delegate () { processResults(retTop); }));
 
             //Gets the Version information from Server and exits if the Version is incorrect
             retVer = ADFGXserv.GetVersion();
@@ -204,8 +212,8 @@ namespace ADFGX_Cloud_Solver
         private void UpdateLogTimer_Tick(object sender, EventArgs e)
         {
             this.LogText.Invoke(new MethodInvoker(delegate () { this.LogText.Text = GlobalUpdateString; }));
-            this.statusStrip1.Invoke(new MethodInvoker(delegate () { this.GoodKeys.Text = GoodCount.ToString(); }));
-            this.statusStrip1.Invoke(new MethodInvoker(delegate () { this.KeysTried.Text = TotalCount.ToString(); }));
+            this.statusStrip1.Invoke(new MethodInvoker(delegate () { this.GoodKeys.Text = String.Format(CultureInfo.InvariantCulture, "{0:0,0}", GoodCount ); }));
+            this.statusStrip1.Invoke(new MethodInvoker(delegate () { this.KeysTried.Text = String.Format(CultureInfo.InvariantCulture, "{0:0,0}", TotalCount); }));
         }
 
         /// <summary>
@@ -222,36 +230,52 @@ namespace ADFGX_Cloud_Solver
         /// </summary>
         private void cmdStart_Click(object sender, EventArgs e)
         {
-            cts = new System.Threading.CancellationTokenSource();
-            CPUperc = CPUlevel.Text;
-            if (ContribText.Text == "UrRedditName")
-                ContributerName = "N/A";
+            if (running)
+            {
+                cts.Cancel();
+                ContribText.Enabled = true;
+                CPUlevel.Enabled = true;
+                statuslbl.ForeColor = Color.Red;
+                statuslbl.Text = "STOPPING...";
+                do
+                {
+                    Application.DoEvents();
+                    System.Threading.Thread.Sleep(100);
+                } while (BruteForceWorker.IsBusy);
+                Pbar.Visible = false;
+                UpdateLogTimer.Stop();
+                statuslbl.ForeColor = Color.Black;
+                statuslbl.Text = "IDLE";
+                cmdStart.Text = "Start Factoring";
+                running = false;
+            }
             else
-                ContributerName = ContribText.Text;
-            //Start the Main Brute Forcing Method
-            BruteForceWorker.RunWorkerAsync();
-            Pbar.Visible = true;
-            UpdateLogTimer.Start();
-            statuslbl.ForeColor = Color.LimeGreen;
-            statuslbl.Text = "Working...";
+            {
+                cts = new System.Threading.CancellationTokenSource();
+                ContribText.Enabled = false;
+                CPUlevel.Enabled = false;
+                CPUperc = CPUlevel.Text;
+                if (ContribText.Text == "UrRedditName")
+                    ContributerName = "N/A";
+                else
+                    ContributerName = ContribText.Text;
+                //Start the Main Brute Forcing Method
+                BruteForceWorker.RunWorkerAsync();
+                Pbar.Visible = true;
+                UpdateLogTimer.Start();
+                statuslbl.ForeColor = Color.LimeGreen;
+                statuslbl.Text = "Working...";
+                cmdStart.Text = "Stop Factoring";
+                running = true;
+            }
+
         }
         /// <summary>
         /// The Click command for the Stop button that is used to stop the Premutation Brute Forcing.
         /// </summary>
         private void cmdQuit_Click(object sender, EventArgs e)
         {
-            cts.Cancel();
-            statuslbl.ForeColor = Color.Red;
-            statuslbl.Text = "STOPPING...";
-            do
-            {
-                Application.DoEvents();
-                System.Threading.Thread.Sleep(100);
-            } while (BruteForceWorker.IsBusy);
-            Pbar.Visible = false;
-            UpdateLogTimer.Stop();
-            statuslbl.ForeColor = Color.Black;
-            statuslbl.Text = "IDLE";
+
         }
 
 
@@ -295,6 +319,24 @@ namespace ADFGX_Cloud_Solver
             return plaintext.ToString();
         }
 
+        private void processResults(string results)
+        {
+            int count = 0;
+            foreach (Match match in resultRegex.Matches(results))
+            {
+                resultList.Add(new Result()
+                {
+                    Rank = count + 1,
+                    Return = match.Groups["Return"].Value,
+                    Key = match.Groups["Key"].Value,
+                    Score = float.Parse(match.Groups["Score"].Value),
+                    From = match.Groups["From"].Value,
+                    Timestamp = DateTime.Parse(match.Groups["Date"].Value + " " + match.Groups["Time"].Value)
+                });
+
+                count++;
+            }
+        }
         /// <summary>
         /// This function simply proves a Infinite IEnumerable to make the later used Parallel Threading Loop Infinite.
         /// </summary>
@@ -344,4 +386,5 @@ namespace ADFGX_Cloud_Solver
             return new string(result);
         }
     }
+
 }
