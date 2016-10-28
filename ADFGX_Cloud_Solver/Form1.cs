@@ -25,7 +25,7 @@ namespace ADFGX_Cloud_Solver
         public static System.Threading.CancellationTokenSource cts = new System.Threading.CancellationTokenSource();
         public bool running = false;
         private BindingList<Result> resultList = new BindingList<Result>();
-        Regex resultRegex = new Regex(@"Return: (?'Return'\w{34}), CipherKey: (?'Key'\w{25}), Score: -?(?'Score'\d+), From: (?'From'.+), Date: (?'Date'\d{2}/\d{2}/\d{4}) (?'Time'\d+\:\d{2}\:\d{2} (?:A|P)M)");
+        Regex resultRegex = new Regex(@"Return: (?'Return'\w{34}), CipherKey: (?'Key'\w{25}), Score: (?'Score'-?\d+), From: (?'From'.+), Date: (?'Date'\d{2}/\d{2}/\d{4}) (?'Time'\d+\:\d{2}\:\d{2} (?:A|P)M)");
         public Form1()
         {
             InitializeComponent();
