@@ -38,11 +38,8 @@ namespace ADFGX_Cloud_Solver
         {
             string ip = "";
             string name = "";
-<<<<<<< HEAD
             try { name = Form1.ContributerName; } catch { }
-=======
             try {name = Form1.ContributerName; } catch { }
->>>>>>> refs/remotes/TheRealDF/master
             try { ip = GetIP(); } catch { }
             GlobalClient.SetLog("EXCEPTION", e.Exception.Message, e.Exception.InnerException + Environment.NewLine + Environment.NewLine + e.Exception.StackTrace, "PC", ip, name);
             MessageBox.Show("The application has experienced a fatal error. The telemetry in the application has sent the needed information to the server. We will get this fixed ASAP!" + Environment.NewLine + "ERROR:" + Environment.NewLine + e.Exception.Message, "Unhandled Thread Exception");
@@ -66,11 +63,7 @@ namespace ADFGX_Cloud_Solver
 
         public static string GetIP()
         {
-<<<<<<< HEAD
             return new System.Net.WebClient().DownloadString("http://bot.whatismyipaddress.com");
-=======
-           return new System.Net.WebClient().DownloadString("http://bot.whatismyipaddress.com");
->>>>>>> refs/remotes/TheRealDF/master
         }
 
 #if __MonoCS__
