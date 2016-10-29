@@ -198,6 +198,7 @@
             // 
             // CPUlevel
             // 
+            this.CPUlevel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.CPUlevel.FormattingEnabled = true;
             this.CPUlevel.Items.AddRange(new object[] {
             "LOW",
@@ -223,7 +224,7 @@
             this.ContribLabel.Name = "ContribLabel";
             this.ContribLabel.Size = new System.Drawing.Size(501, 20);
             this.ContribLabel.TabIndex = 53;
-            this.ContribLabel.Text = "Contributor Name (Used to identify what you contribute later):";
+            this.ContribLabel.Text = "Contributor Name (Used to identify what you contribute):";
             // 
             // label4
             // 
@@ -260,6 +261,7 @@
             // cmdQuit
             // 
             this.cmdQuit.Location = new System.Drawing.Point(565, 29);
+            this.cmdQuit.Enabled = false;
             this.cmdQuit.Name = "cmdQuit";
             this.cmdQuit.Size = new System.Drawing.Size(116, 28);
             this.cmdQuit.TabIndex = 3;
@@ -308,6 +310,7 @@
             this.resultsText.Location = new System.Drawing.Point(3, 3);
             this.resultsText.Multiline = true;
             this.resultsText.Name = "resultsText";
+            this.resultsText.ReadOnly = true;
             this.resultsText.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.resultsText.Size = new System.Drawing.Size(700, 306);
             this.resultsText.TabIndex = 4;
@@ -332,6 +335,7 @@
             this.newsText.Location = new System.Drawing.Point(3, 3);
             this.newsText.Multiline = true;
             this.newsText.Name = "newsText";
+            this.newsText.ReadOnly = true;
             this.newsText.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.newsText.Size = new System.Drawing.Size(700, 306);
             this.newsText.TabIndex = 1;
@@ -410,6 +414,7 @@
             this.Name = "Form1";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "ADFGX Cloud Factoring Application v5";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
