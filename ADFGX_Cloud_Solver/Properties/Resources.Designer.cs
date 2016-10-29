@@ -61,28 +61,6 @@ namespace ADFGX_Cloud_Solver.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;
-        ///&lt;configuration&gt;
-        ///    &lt;startup&gt; 
-        ///        &lt;supportedRuntime version=&quot;v4.0&quot; sku=&quot;.NETFramework,Version=v4.5.2&quot; /&gt;
-        ///    &lt;/startup&gt;
-        ///    &lt;system.serviceModel&gt;
-        ///        &lt;bindings&gt;
-        ///            &lt;basicHttpBinding&gt;
-        ///                &lt;binding name=&quot;BasicHttpBinding_IService&quot; /&gt;
-        ///            &lt;/basicHttpBinding&gt;
-        ///        &lt;/bindings&gt;
-        ///        &lt;client&gt;
-        ///            &lt;endpoint address=&quot;http://fascinatinginformation.com/ADFGXService/Service.svc&quot;
-        ///                binding=&quot;basicHttpBin [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string ADFGX_Cloud_Solver_exe {
-            get {
-                return ResourceManager.GetString("ADFGX_Cloud_Solver_exe", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to TION 13168375
         ///NTHE 11234972
         ///THER 10218035

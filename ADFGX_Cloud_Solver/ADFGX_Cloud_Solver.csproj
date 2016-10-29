@@ -66,11 +66,7 @@
     <Compile Include="ngram_score.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Service References\ADFGXService\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
+    <Compile Include="Service.cs" />
     <EmbeddedResource Include="Credits.resx">
       <DependentUpon>Credits.cs</DependentUpon>
     </EmbeddedResource>
@@ -96,14 +92,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="Resources\ADFGX_Cloud_Solver.exe.config" />
-    <None Include="Service References\ADFGXService\Service.wsdl" />
-    <None Include="Service References\ADFGXService\Service.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\ADFGXService\Service1.xsd">
-      <SubType>Designer</SubType>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -116,24 +104,6 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadataStorage Include="Service References\ADFGXService\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\ADFGXService\Service.disco" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\ADFGXService\configuration91.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\ADFGXService\configuration.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\ADFGXService\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\english_trigrams.txt" />
