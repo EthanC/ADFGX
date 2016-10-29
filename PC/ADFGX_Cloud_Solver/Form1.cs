@@ -18,7 +18,7 @@ namespace ADFGX_Cloud_Solver
         public static double BestScore = -99999;
         public static string CPUperc = "HIGH";
         public static string retVer = "";
-        public int TotalCount = 0;
+        public long TotalCount = 0;
         public int GoodCount = 0;
         public static System.Threading.CancellationTokenSource cts = new System.Threading.CancellationTokenSource();
         public static ServiceClient client;
@@ -39,6 +39,10 @@ namespace ADFGX_Cloud_Solver
         /// </summary>
         private void Form1_Load(object sender, EventArgs e)
         {
+            ContributerName = Properties.Settings.Default.ContributerName;
+            ContribText.Text = ContributerName;
+            CPUlevel.SelectedItem = Properties.Settings.Default.CPULevel;
+
             //Start Inital BackgroundWorker Thread and call to Server
             InitServerWorker.RunWorkerAsync();
         }
@@ -225,8 +229,8 @@ namespace ADFGX_Cloud_Solver
         private void UpdateLogTimer_Tick(object sender, EventArgs e)
         {
             this.LogText.Invoke(new MethodInvoker(delegate () { this.LogText.Text = GlobalUpdateString; }));
-            this.statusStrip1.Invoke(new MethodInvoker(delegate () { this.GoodKeys.Text = GoodCount.ToString(); }));
-            this.statusStrip1.Invoke(new MethodInvoker(delegate () { this.KeysTried.Text = TotalCount.ToString(); }));
+            this.statusStrip1.Invoke(new MethodInvoker(delegate () { this.GoodKeys.Text = GoodCount.ToString("N0"); }));
+            this.statusStrip1.Invoke(new MethodInvoker(delegate () { this.KeysTried.Text = TotalCount.ToString("N0"); }));
         }
 
         /// <summary>
@@ -251,6 +255,10 @@ namespace ADFGX_Cloud_Solver
                 ContributerName = ContribText.Text;
             //Start the Main Brute Forcing Method
             BruteForceWorker.RunWorkerAsync();
+            cmdStart.Enabled = false;
+            cmdQuit.Enabled = true;
+            CPUlevel.Enabled = false;
+            ContribText.Enabled = false;
             Pbar.Visible = true;
             UpdateLogTimer.Start();
             statuslbl.ForeColor = Color.LimeGreen;
@@ -269,13 +277,22 @@ namespace ADFGX_Cloud_Solver
                 Application.DoEvents();
                 System.Threading.Thread.Sleep(100);
             } while (BruteForceWorker.IsBusy);
+            cmdStart.Enabled = true;
+            cmdQuit.Enabled = false;
+            CPUlevel.Enabled = true;
+            ContribText.Enabled = true;
             Pbar.Visible = false;
             UpdateLogTimer.Stop();
             statuslbl.ForeColor = Color.Black;
             statuslbl.Text = "IDLE";
         }
 
-
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Properties.Settings.Default.ContributerName = ContribText.Text;
+            Properties.Settings.Default.CPULevel = CPUlevel.Text;
+            Properties.Settings.Default.Save();
+        }
 
         #region Helper Functions
 
