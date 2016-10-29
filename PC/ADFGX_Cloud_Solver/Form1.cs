@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
+using System.ServiceModel;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -22,15 +25,17 @@ namespace ADFGX_Cloud_Solver
         public int GoodCount = 0;
         public static System.Threading.CancellationTokenSource cts = new System.Threading.CancellationTokenSource();
         public static ServiceClient client;
+        public bool running = false;
+        private BindingList<Result> resultList = new BindingList<Result>();
+        Regex resultRegex = new Regex(@"Return: (?'Return'\w{34}), CipherKey: (?'Key'\w{25}), Score: (?'Score'-?\d+), From: (?'From'.+), Date: (?'Date'\d{2}/\d{2}/\d{4}) (?'Time'\d+\:\d{2}\:\d{2} (?:A|P)M)");
         public Form1()
         {
             InitializeComponent();
             Pbar.Visible = false;
             CPUlevel.SelectedIndex = 0;
-
+            dgvTopResults.DataSource = resultList;
             System.ServiceModel.BasicHttpBinding binding = new System.ServiceModel.BasicHttpBinding();
             System.ServiceModel.EndpointAddress address = new System.ServiceModel.EndpointAddress("http://fascinatinginformation.com/ADFGXService/Service.svc");
-
             client = new ServiceClient(binding, address);
         }
 
@@ -48,64 +53,9 @@ namespace ADFGX_Cloud_Solver
         /// </summary>
         private void InitServerWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-            //TryCatch statement to catch a rouge error we have been having issues with
-            try
-            {
-                //Gets the News Information from Server and populates the News Textbox
-                var retNews = client.GetNews();
-                if (retNews.Contains("ERROR:"))
-                    this.newsText.Invoke(new MethodInvoker(delegate () { this.newsText.Text = "An error occured while attempting to contact server! Please contact TheRealDecrypterfixer@gmail.com to report the below error..." + Environment.NewLine + Environment.NewLine + retNews; }));
-                else
-                    this.newsText.Invoke(new MethodInvoker(delegate () { this.newsText.Text = retNews; }));
 
-                //Gets the Top20 results from Server and populates the Results Textbox
-                var retTop = client.GetTop20();
-                if (retTop.Contains("ERROR:"))
-                    this.resultsText.Invoke(new MethodInvoker(delegate () { this.resultsText.Text = "An error occured while attempting to contact server! Please contact TheRealDecrypterfixer@gmail.com to report the below error..." + Environment.NewLine + Environment.NewLine + retTop; }));
-                else
-                    this.resultsText.Invoke(new MethodInvoker(delegate () { this.resultsText.Text = retTop; }));
-
-                //Gets the currently being worked on Cipher
-                var retCipher = client.GetCipher();
-                if (retTop.Contains("ERROR:"))
-                {
-                    MessageBox.Show("An error occured while attempting to obtain the cipher to work on from the server. This is commonly because of a lack of internet connection. This application needs the internet to run. If this error continues after being connected, please ensure you can view the site http://fascinatinginformation.com/ and contact TheRealDecrypterFixer@gmail.com" + Environment.NewLine + Environment.NewLine + retCipher, "ADFGX Cloud Factoring App");
-                }
-                else
-                    Cipher = retCipher;
-
-                //Gets the Version information from Server and exits if the Version is incorrect
-                retVer = client.GetVersion();
-                if (retVer.Contains("ERROR:"))
-                {
-                    MessageBox.Show("An error occured while attempting to check the version of the application with the server. This is commonly because of a lack of internet connection. This application needs the internet to run. If this error continues after being connected, please ensure you can view the site http://fascinatinginformation.com/ and contact TheRealDecrypterFixer@gmail.com" + Environment.NewLine + Environment.NewLine + retVer, "ADFGX Cloud Factoring App");
-                    Environment.Exit(0);
-                }
-                else if (retVer == "")
-                {
-                    MessageBox.Show("An error occured while attempting to check the version of the application with the server. This is commonly because of a lack of internet connection. This application needs the internet to run. If this error continues after being connected, please ensure you can view the site http://fascinatinginformation.com/ and contact TheRealDecrypterFixer@gmail.com . Exiting application to avoid wasting resources.", "ADFGX Cloud Factoring App");
-                    Environment.Exit(0);
-                }
-                else
-                {
-                    if (retVer != "5")
-                    {
-                        MessageBox.Show("A new version of the application has been released, thus running this version would be a waste. When exiting this messagebox the new version will be downloaded and ran.", "ADFGX Cloud Factoring App");
-                        System.Net.WebClient myWebClient = new System.Net.WebClient();
-                        myWebClient.DownloadFile("http://fascinatinginformation.com/ADFGX_Cloud_Solver.exe", "ADFGX_Cloud_Solver_" + retVer + ".exe");
-                        System.Diagnostics.Process.Start("ADFGX_Cloud_Solver_" + retVer + ".exe");
-                        Environment.Exit(0);
-                    }
-                }
-            }
-            catch(Exception ex) //Catch Exception for the whole thread as it calls the HTTP server so much. We have been seeing a large number of errors here, and the information below will tell us why to fix it.
-            {
-                string ip = "";
-                string name = "";
-                try { name = ContributerName; } catch { }
-                try { ip = Program.GetIP(); } catch { }
-                client.SetLog("ERROR", ex.Message, ex.InnerException + Environment.NewLine + Environment.NewLine + ex.StackTrace, "PC", ip, name);
-            }
+            updateInterface();
+          
         }
 
 
@@ -130,22 +80,23 @@ namespace ADFGX_Cloud_Solver
                 Parallel.ForEach(Infinite(), opts, new Action<bool>((val) =>
                 {
                     opts.CancellationToken.ThrowIfCancellationRequested();
-                //Shuffle the Alphabet and get a random Cipher Key
-                string C_Aplha = Alpha.Shuffle();
-                //Decipher the ciphertext by Substitution
-                var ret = Cipher.Substitute(C_Aplha);
-                        //------var ret = SubstitutionSolve(Cipher, C_Aplha);---//
-                //Get Score of the return by calculating the English Ngram Frequencies in it
-                var Sscore = GenericScoring.ngram_score.ScoreDouble(ret);
-                //If the Score in above -120 (Average English Ngram Score for a 34 length Sentence), send to server
-                if (Sscore > -280)
+                    //Shuffle the Alphabet and get a random Cipher Key
+                    string C_Aplha = Alpha.Shuffle();
+                    //Decipher the ciphertext by Substitution
+                    var ret = Cipher.Substitute(C_Aplha);
+                    //------var ret = SubstitutionSolve(Cipher, C_Aplha);---//
+                    //Get Score of the return by calculating the English Ngram Frequencies in it
+                    var Sscore = GenericScoring.ngram_score.ScoreDouble(ret);
+                    //If the Score in above -120 (Average English Ngram Score for a 34 length Sentence), send to server
+                    if (Sscore > -280)
                     {
                         GoodCount++;
                         //FIND A BETTER WAY TO HANDLE THIS HTTP EXCEPTION SO WE DO NOT LOSE THIS DATA!!
-                        try{client.SetData(ret, C_Aplha, Convert.ToInt32(Sscore), ContributerName);}catch (Exception){}
+                     try{client.SetData(ret, C_Aplha, Convert.ToInt32(Sscore), ContributerName);}catch (Exception){}
+
                     }
-                //Log best score so far for UI log
-                if (Sscore > BestScore)
+                    //Log best score so far for UI log
+                    if (Sscore > BestScore)
                     {
                         BestScore = Sscore;
                         GlobalUpdateString = "Your Best Score So Far: " + Environment.NewLine + "Key: " + C_Aplha + Environment.NewLine + "Result: " + ret + Environment.NewLine + "Score: " + Sscore;
@@ -167,56 +118,7 @@ namespace ADFGX_Cloud_Solver
         /// </summary>
         private void UpdateServerInfoTimer_Tick(object sender, EventArgs e)
         {
-            //TryCatch statement to catch a rouge error we have been having issues with
-            try
-            {
-                //Gets the News Information from Server and populates the News Textbox
-                var retNews = client.GetNews();
-                if (retNews.Contains("ERROR:"))
-                    this.newsText.Invoke(new MethodInvoker(delegate () { this.newsText.Text = "An error occured while attempting to contact server! Please contact TheRealDecrypterfixer@gmail.com to report the below error..." + Environment.NewLine + Environment.NewLine + retNews; }));
-                else
-                    this.newsText.Invoke(new MethodInvoker(delegate () { this.newsText.Text = retNews; }));
-
-                //Gets the Top20 results from Server and populates the Results Textbox
-                var retTop = client.GetTop20();
-                if (retTop.Contains("ERROR:"))
-                    this.resultsText.Invoke(new MethodInvoker(delegate () { this.resultsText.Text = "An error occured while attempting to contact server! Please contact TheRealDecrypterfixer@gmail.com to report the below error..." + Environment.NewLine + Environment.NewLine + retTop; }));
-                else
-                    this.resultsText.Invoke(new MethodInvoker(delegate () { this.resultsText.Text = retTop; }));
-
-                //Gets the Version information from Server and exits if the Version is incorrect
-                retVer = client.GetVersion();
-                if (retVer.Contains("ERROR:"))
-                {
-                    MessageBox.Show("An error occured while attempting to check the version of the application with the server. This is commonly because of a lack of internet connection. This application needs the internet to run. If this error continues after being connected, please ensure you can view the site http://fascinatinginformation.com/ and contact TheRealDecrypterFixer@gmail.com" + Environment.NewLine + Environment.NewLine + retVer, "ADFGX Cloud Factoring App");
-                    Environment.Exit(0);
-                }
-                else if (retVer == "")
-                {
-                    MessageBox.Show("An error occured while attempting to check the version of the application with the server. This is commonly because of a lack of internet connection. This application needs the internet to run. If this error continues after being connected, please ensure you can view the site http://fascinatinginformation.com/ and contact TheRealDecrypterFixer@gmail.com . Exiting application to avoid wasting resources.", "ADFGX Cloud Factoring App");
-                    Environment.Exit(0);
-                }
-                else
-                {
-                    if (retVer != "5")
-                    {
-                        cts.Cancel();
-                        MessageBox.Show("A new version of the application has been released, thus running this version would be a waste. When exiting this messagebox the new version will be downloaded and ran.", "ADFGX Cloud Factoring App");
-                        System.Net.WebClient myWebClient = new System.Net.WebClient();
-                        myWebClient.DownloadFile("http://fascinatinginformation.com/ADFGX_Cloud_Solver.exe", "ADFGX_Cloud_Solver_" + retVer + ".exe");
-                        System.Diagnostics.Process.Start("ADFGX_Cloud_Solver_" + retVer + ".exe");
-                        Environment.Exit(0);
-                    }
-                }
-            }
-            catch (Exception ex) //Catch Exception for the whole thread as it calls the HTTP server so much. We have been seeing a large number of errors here, and the information below will tell us why to fix it.
-            {
-                string ip = "";
-                string name = "";
-                try { name = ContributerName; } catch { }
-                try { ip = Program.GetIP(); } catch { }
-                client.SetLog("ERROR", ex.Message, ex.InnerException + Environment.NewLine + Environment.NewLine + ex.StackTrace, "PC", ip, name);
-            }
+            updateInterface();
         }
 
         /// <summary>
@@ -225,8 +127,8 @@ namespace ADFGX_Cloud_Solver
         private void UpdateLogTimer_Tick(object sender, EventArgs e)
         {
             this.LogText.Invoke(new MethodInvoker(delegate () { this.LogText.Text = GlobalUpdateString; }));
-            this.statusStrip1.Invoke(new MethodInvoker(delegate () { this.GoodKeys.Text = GoodCount.ToString(); }));
-            this.statusStrip1.Invoke(new MethodInvoker(delegate () { this.KeysTried.Text = TotalCount.ToString(); }));
+            this.statusStrip1.Invoke(new MethodInvoker(delegate () { this.GoodKeys.Text = String.Format(CultureInfo.InvariantCulture, "{0:0,0}", GoodCount); }));
+            this.statusStrip1.Invoke(new MethodInvoker(delegate () { this.KeysTried.Text = String.Format(CultureInfo.InvariantCulture, "{0:0,0}", TotalCount); }));
         }
 
         /// <summary>
@@ -243,39 +145,199 @@ namespace ADFGX_Cloud_Solver
         /// </summary>
         private void cmdStart_Click(object sender, EventArgs e)
         {
-            cts = new System.Threading.CancellationTokenSource();
-            CPUperc = CPUlevel.Text;
-            if (ContribText.Text == "UrRedditName")
-                ContributerName = "N/A";
-            else
-                ContributerName = ContribText.Text;
-            //Start the Main Brute Forcing Method
-            BruteForceWorker.RunWorkerAsync();
-            Pbar.Visible = true;
-            UpdateLogTimer.Start();
-            statuslbl.ForeColor = Color.LimeGreen;
-            statuslbl.Text = "Working...";
-        }
-        /// <summary>
-        /// The Click command for the Stop button that is used to stop the Premutation Brute Forcing.
-        /// </summary>
-        private void cmdQuit_Click(object sender, EventArgs e)
-        {
-            cts.Cancel();
-            statuslbl.ForeColor = Color.Red;
-            statuslbl.Text = "STOPPING...";
-            do
+            if (running)
             {
-                Application.DoEvents();
-                System.Threading.Thread.Sleep(100);
-            } while (BruteForceWorker.IsBusy);
-            Pbar.Visible = false;
-            UpdateLogTimer.Stop();
-            statuslbl.ForeColor = Color.Black;
-            statuslbl.Text = "IDLE";
+                try
+                {
+                    cts.Cancel();
+                }
+                catch (ObjectDisposedException ex)
+                {
+
+                }
+                ContribText.Enabled = true;
+                CPUlevel.Enabled = true;
+                statuslbl.ForeColor = Color.Red;
+                statuslbl.Text = "STOPPING...";
+                do
+                {
+                    Application.DoEvents();
+                    System.Threading.Thread.Sleep(100);
+                } while (BruteForceWorker.IsBusy);
+                Pbar.Visible = false;
+                UpdateLogTimer.Stop();
+                statuslbl.ForeColor = Color.Black;
+                statuslbl.Text = "IDLE";
+                cmdStart.Text = "Start Factoring";
+                running = false;
+            }
+            else
+            {
+                cts = new System.Threading.CancellationTokenSource();
+                ContribText.Enabled = false;
+                CPUlevel.Enabled = false;
+                CPUperc = CPUlevel.Text;
+                if (ContribText.Text == "UrRedditName")
+                    ContributerName = "N/A";
+                else
+                    ContributerName = ContribText.Text;
+                //Start the Main Brute Forcing Method
+                BruteForceWorker.RunWorkerAsync();
+                Pbar.Visible = true;
+                UpdateLogTimer.Start();
+                statuslbl.ForeColor = Color.LimeGreen;
+                statuslbl.Text = "Working...";
+                cmdStart.Text = "Stop Factoring";
+                running = true;
+            }
+        }
+
+        private void processResults(string results)
+        {
+            resultList.Clear();
+            int count = 0;
+            foreach (Match match in resultRegex.Matches(results))
+            {
+                resultList.Add(new Result()
+                {
+                    Rank = count + 1,
+                    Return = match.Groups["Return"].Value,
+                    Key = match.Groups["Key"].Value,
+                    Score = float.Parse(match.Groups["Score"].Value),
+                    From = match.Groups["From"].Value,
+                    Timestamp = DateTime.Parse(match.Groups["Date"].Value + " " + match.Groups["Time"].Value)
+                });
+
+                count++;
+            }
+            this.dgvTopResults.DataSource = resultList;
+        }
+
+        public void updateInterface()
+        {
+
+
+            //Gets the News Information from Server and populates the News Textbox
+            var retNews = "";
+            try
+            {
+                retNews = client.GetNews();
+            }
+            catch (TimeoutException exTimeout)
+            {
+                retNews = "ERROR: Connection timed-out.";
+                logError(exTimeout);
+            }
+            catch (ServerTooBusyException exTooBusy)
+            {
+                retNews = "ERROR: Server too busy.";
+                logError(exTooBusy);
+            }
+            if (retNews.Contains("ERROR:"))
+                this.newsText.Invoke(new MethodInvoker(delegate () { this.newsText.Text = "An error occured while attempting to contact server! Please contact TheRealDecrypterfixer@gmail.com to report the below error..." + Environment.NewLine + Environment.NewLine + retNews; }));
+            else
+                this.newsText.Invoke(new MethodInvoker(delegate () { this.newsText.Text = retNews; }));
+
+            //Gets the Top20 results from Server and populates the Results Textbox
+            var retTop = "";
+            try
+            {
+                retTop = client.GetTop20();
+            }
+            catch (TimeoutException exTimeout)
+            {
+                retTop = "ERROR: Connection timed-out.";
+                logError(exTimeout);
+            }
+            catch (ServerTooBusyException exTooBusy)
+            {
+                retTop = "ERROR: Server too busy.";
+                logError(exTooBusy);
+            }
+            if (retTop.Contains("ERROR:"))
+                this.dgvTopResults.Invoke(new MethodInvoker(delegate () { MessageBox.Show("An error occured while attempting to contact server! Please contact TheRealDecrypterfixer@gmail.com to report the below error..." + Environment.NewLine + Environment.NewLine + retTop); }));
+            else
+                this.dgvTopResults.Invoke(new MethodInvoker(delegate () { processResults(retTop); }));
+
+            //Gets the currently being worked on Cipher
+            var retCipher = "";
+            try
+            {
+                retCipher = client.GetCipher();
+            }
+            catch (TimeoutException exTimeout)
+            {
+                retCipher = "ERROR: Connection timed-out.";
+                logError(exTimeout);
+            }
+            catch (ServerTooBusyException exTooBusy)
+            {
+                retCipher = "ERROR: Server too busy.";
+                logError(exTooBusy);
+            }
+            if (retTop.Contains("ERROR:"))
+            {
+                MessageBox.Show("An error occured while attempting to obtain the cipher to work on from the server. This is commonly because of a lack of internet connection. This application needs the internet to run. If this error continues after being connected, please ensure you can view the site http://fascinatinginformation.com/ and contact TheRealDecrypterFixer@gmail.com" + Environment.NewLine + Environment.NewLine + retCipher, "ADFGX Cloud Factoring App");
+            }
+            else
+                Cipher = retCipher;
+
+            //Gets the Version information from Server and exits if the Version is incorrect
+            try
+            {
+                retVer = client.GetVersion();
+            }
+            catch (TimeoutException exTimeout)
+            {
+                retVer = "ERROR: Connection timed-out.";
+                logError(exTimeout);
+            }
+            catch (ServerTooBusyException exTooBusy)
+            {
+                retVer = "ERROR: Server too busy.";
+                logError(exTooBusy);
+            }
+            if (retVer.Contains("ERROR:"))
+            {
+                MessageBox.Show("An error occured while attempting to check the version of the application with the server. This is commonly because of a lack of internet connection. This application needs the internet to run. If this error continues after being connected, please ensure you can view the site http://fascinatinginformation.com/ and contact TheRealDecrypterFixer@gmail.com" + Environment.NewLine + Environment.NewLine + retVer, "ADFGX Cloud Factoring App");
+                Environment.Exit(0);
+            }
+            else if (retVer == "")
+            {
+                MessageBox.Show("An error occured while attempting to check the version of the application with the server. This is commonly because of a lack of internet connection. This application needs the internet to run. If this error continues after being connected, please ensure you can view the site http://fascinatinginformation.com/ and contact TheRealDecrypterFixer@gmail.com . Exiting application to avoid wasting resources.", "ADFGX Cloud Factoring App");
+                Environment.Exit(0);
+            }
+            else
+            {
+                if (retVer != "5")
+                {
+                    MessageBox.Show("A new version of the application has been released, thus running this version would be a waste. When exiting this messagebox the new version will be downloaded and ran.", "ADFGX Cloud Factoring App");
+                    System.Net.WebClient myWebClient = new System.Net.WebClient();
+                    myWebClient.DownloadFile("http://fascinatinginformation.com/ADFGX_Cloud_Solver.exe", "ADFGX_Cloud_Solver_" + retVer + ".exe");
+                    System.Diagnostics.Process.Start("ADFGX_Cloud_Solver_" + retVer + ".exe");
+                }
+            }
         }
 
 
+        /// <summary>
+        /// The Click command for the Start button that is used to start the Premutation Brute Forcing.
+        /// </summary>
+
+        public void logError(Exception ex)
+        {
+            string ip = "";
+            string name = "";
+            try { name = ContributerName; } catch { }
+            try { ip = Program.GetIP(); } catch { }
+            try
+            {
+                client.SetLog("ERROR", ex.Message, ex.InnerException + Environment.NewLine + Environment.NewLine + ex.StackTrace, "PC", ip, name);
+            } catch(Exception logEx)
+            {
+
+            }
+        }
 
         #region Helper Functions
 
@@ -364,5 +426,7 @@ namespace ADFGX_Cloud_Solver
             }
             return new string(result);
         }
+
+
     }
 }
