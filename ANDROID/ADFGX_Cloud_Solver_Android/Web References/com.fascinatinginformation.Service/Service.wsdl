@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="Service" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="http://166.62.125.145/ADFGXService/Service.svc?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://166.62.125.145/ADFGXService/Service.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://166.62.125.145/ADFGXService/Service.svc?xsd=xsd2" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IService_SetData_InputMessage">
+    <wsdl:part name="parameters" element="tns:SetData" />
+  </wsdl:message>
+  <wsdl:message name="IService_SetData_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SetDataResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetNews_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetNews" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetNews_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetNewsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetTop20_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetTop20" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetTop20_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetTop20Response" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetVersion_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetVersion" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetVersion_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetVersionResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetCipher_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetCipher" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetCipher_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetCipherResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetData_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetData" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetData_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetDataResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetAndroidVersion_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAndroidVersion" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetAndroidVersion_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAndroidVersionResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetAndroidThreshold_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAndroidThreshold" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetAndroidThreshold_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAndroidThresholdResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetAndroidAlphabet_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAndroidAlphabet" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetAndroidAlphabet_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAndroidAlphabetResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetAndroidCipher_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAndroidCipher" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetAndroidCipher_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAndroidCipherResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetTopAndroid_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetTopAndroid" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetTopAndroid_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetTopAndroidResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_SetLog_InputMessage">
+    <wsdl:part name="parameters" element="tns:SetLog" />
+  </wsdl:message>
+  <wsdl:message name="IService_SetLog_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SetLogResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IService">
+    <wsdl:operation name="SetData">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/SetData" message="tns:IService_SetData_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/SetDataResponse" message="tns:IService_SetData_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetNews">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/GetNews" message="tns:IService_GetNews_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/GetNewsResponse" message="tns:IService_GetNews_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetTop20">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/GetTop20" message="tns:IService_GetTop20_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/GetTop20Response" message="tns:IService_GetTop20_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetVersion">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/GetVersion" message="tns:IService_GetVersion_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/GetVersionResponse" message="tns:IService_GetVersion_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCipher">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/GetCipher" message="tns:IService_GetCipher_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/GetCipherResponse" message="tns:IService_GetCipher_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetData">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/GetData" message="tns:IService_GetData_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/GetDataResponse" message="tns:IService_GetData_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAndroidVersion">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/GetAndroidVersion" message="tns:IService_GetAndroidVersion_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/GetAndroidVersionResponse" message="tns:IService_GetAndroidVersion_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAndroidThreshold">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/GetAndroidThreshold" message="tns:IService_GetAndroidThreshold_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/GetAndroidThresholdResponse" message="tns:IService_GetAndroidThreshold_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAndroidAlphabet">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/GetAndroidAlphabet" message="tns:IService_GetAndroidAlphabet_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/GetAndroidAlphabetResponse" message="tns:IService_GetAndroidAlphabet_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAndroidCipher">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/GetAndroidCipher" message="tns:IService_GetAndroidCipher_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/GetAndroidCipherResponse" message="tns:IService_GetAndroidCipher_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetTopAndroid">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/GetTopAndroid" message="tns:IService_GetTopAndroid_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/GetTopAndroidResponse" message="tns:IService_GetTopAndroid_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SetLog">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/SetLog" message="tns:IService_SetLog_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/SetLogResponse" message="tns:IService_SetLog_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_IService" type="tns:IService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="SetData">
+      <soap:operation soapAction="http://tempuri.org/IService/SetData" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetNews">
+      <soap:operation soapAction="http://tempuri.org/IService/GetNews" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTop20">
+      <soap:operation soapAction="http://tempuri.org/IService/GetTop20" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetVersion">
+      <soap:operation soapAction="http://tempuri.org/IService/GetVersion" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCipher">
+      <soap:operation soapAction="http://tempuri.org/IService/GetCipher" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetData">
+      <soap:operation soapAction="http://tempuri.org/IService/GetData" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAndroidVersion">
+      <soap:operation soapAction="http://tempuri.org/IService/GetAndroidVersion" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAndroidThreshold">
+      <soap:operation soapAction="http://tempuri.org/IService/GetAndroidThreshold" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAndroidAlphabet">
+      <soap:operation soapAction="http://tempuri.org/IService/GetAndroidAlphabet" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAndroidCipher">
+      <soap:operation soapAction="http://tempuri.org/IService/GetAndroidCipher" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTopAndroid">
+      <soap:operation soapAction="http://tempuri.org/IService/GetTopAndroid" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetLog">
+      <soap:operation soapAction="http://tempuri.org/IService/SetLog" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Service">
+    <wsdl:port name="BasicHttpBinding_IService" binding="tns:BasicHttpBinding_IService">
+      <soap:address location="http://166.62.125.145/ADFGXService/Service.svc" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
