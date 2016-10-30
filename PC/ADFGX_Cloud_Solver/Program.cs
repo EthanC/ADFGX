@@ -38,6 +38,7 @@ namespace ADFGX_Cloud_Solver
         {
             string ip = "";
             string name = "";
+            try { name = Form1.ContributerName; } catch { }
             try {name = Form1.ContributerName; } catch { }
             try { ip = GetIP(); } catch { }
             GlobalClient.SetLog("EXCEPTION", e.Exception.Message, e.Exception.InnerException + Environment.NewLine + Environment.NewLine + e.Exception.StackTrace, "PC", ip, name);
@@ -62,7 +63,7 @@ namespace ADFGX_Cloud_Solver
 
         public static string GetIP()
         {
-           return new System.Net.WebClient().DownloadString("http://bot.whatismyipaddress.com");
+            return new System.Net.WebClient().DownloadString("http://bot.whatismyipaddress.com");
         }
 
 #if __MonoCS__
