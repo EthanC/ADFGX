@@ -21,7 +21,7 @@ namespace ADFGX_Cloud_Solver
         public static double BestScore = -99999;
         public static string CPUperc = "HIGH";
         public static string retVer = "";
-        public int TotalCount = 0;
+        public long TotalCount = 0;
         public int GoodCount = 0;
         public static System.Threading.CancellationTokenSource cts = new System.Threading.CancellationTokenSource();
         public static ServiceClient client;
@@ -44,6 +44,10 @@ namespace ADFGX_Cloud_Solver
         /// </summary>
         private void Form1_Load(object sender, EventArgs e)
         {
+            ContributerName = Properties.Settings.Default.ContributorName;
+            ContribText.Text = ContributerName;
+            CPUlevel.SelectedItem = Properties.Settings.Default.CPULevel;
+
             //Start Inital BackgroundWorker Thread and call to Server
             InitServerWorker.RunWorkerAsync();
         }
@@ -339,6 +343,13 @@ namespace ADFGX_Cloud_Solver
             }
         }
 
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Properties.Settings.Default.ContributorName = ContribText.Text;
+            Properties.Settings.Default.CPULevel = CPUlevel.Text;
+            Properties.Settings.Default.Save();
+        }
+
         #region Helper Functions
 
         /// <summary>
@@ -390,6 +401,7 @@ namespace ADFGX_Cloud_Solver
         }
 
         #endregion
+
 
     }
 
