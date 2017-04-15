@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ADFGX_Cloud_Solver
+namespace CloudResolve
 {
     class Result
     {

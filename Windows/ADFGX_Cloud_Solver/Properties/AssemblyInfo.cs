@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("ADFGX Cloud Solver")]
-[assembly: AssemblyDescription("A Cloud Factoring Application for solving the ADFGX Cipher")]
+[assembly: AssemblyTitle("CloudResolve")]
+[assembly: AssemblyDescription("Cloud Factoring Distributed Computing Application for solving Ciphers.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("N/A (DF)")]
-[assembly: AssemblyProduct("ADFGX Cloud Solver")]
-[assembly: AssemblyCopyright("No Copyright / Open Source")]
+[assembly: AssemblyCompany("Ethan Chrisp & TheReal_DF")]
+[assembly: AssemblyProduct("CloudResolve")]
+[assembly: AssemblyCopyright("Open Source")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

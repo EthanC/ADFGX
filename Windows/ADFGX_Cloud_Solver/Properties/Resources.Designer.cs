@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ADFGX_Cloud_Solver.Properties {
+namespace CloudResolve.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace ADFGX_Cloud_Solver.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ADFGX_Cloud_Solver.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("CloudResolve.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -97,10 +97,7 @@ namespace ADFGX_Cloud_Solver.Properties {
         ///THEF 3873133
         ///THEY 3809433
         ///HAVE 3735139
-        ///EDTH 3699013
-        ///INGA 3675933
-        ///NDTH 3619148
-        ///TH [rest of string was truncated]&quot;;.
+        ///EDTH  [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string english_quadgrams {
             get {
@@ -146,10 +143,7 @@ namespace ADFGX_Cloud_Solver.Properties {
         ///WAS 8640940
         ///SIN 8629893
         ///STO 8556837
-        ///TTH 8476119
-        ///STA 8399345
-        ///THI 8363593
-        ///TIN 82180 [rest of string was truncated]&quot;;.
+        ///TTH 8476 [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string english_trigrams {
             get {

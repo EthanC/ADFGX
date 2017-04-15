@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ADFGX_Cloud_Solver
+namespace CloudResolve
 {
     static class Program
     {
@@ -31,15 +31,15 @@ namespace ADFGX_Cloud_Solver
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            Application.Run(new CloudResolve());
         }
 
         static void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
         {
             string ip = "";
             string name = "";
-            try { name = Form1.ContributerName; } catch { }
-            try {name = Form1.ContributerName; } catch { }
+            try { name = CloudResolve.ContributerName; } catch { }
+            try {name = CloudResolve.ContributerName; } catch { }
             try { ip = GetIP(); } catch { }
             GlobalClient.SetLog("EXCEPTION", e.Exception.Message, e.Exception.InnerException + Environment.NewLine + Environment.NewLine + e.Exception.StackTrace, "PC", ip, name);
             MessageBox.Show("The application has experienced a fatal error. The telemetry in the application has sent the needed information to the server. We will get this fixed ASAP!" + Environment.NewLine + "ERROR:" + Environment.NewLine + e.Exception.Message, "Unhandled Thread Exception");
@@ -50,7 +50,7 @@ namespace ADFGX_Cloud_Solver
             Exception e = (ee.ExceptionObject as Exception);
             string ip = "";
             string name = "";
-            try { name = Form1.ContributerName; } catch { }
+            try { name = CloudResolve.ContributerName; } catch { }
             try { ip = GetIP(); } catch { }
             GlobalClient.SetLog("EXCEPTION", e.Message, e.InnerException + Environment.NewLine + Environment.NewLine + e.StackTrace, "PC", ip, name);
             MessageBox.Show("The application has experienced a fatal error. The telemetry in the application has sent the needed information to the server. We will get this fixed ASAP!" + Environment.NewLine + "ERROR:" + Environment.NewLine + e.Message, "Unhandled UI Exception");
