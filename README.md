@@ -1,7 +1,5 @@
 # CloudResolve
 
-### Currently offline, soon to be revived.
-
 CloudResolve is a Cloud Factoring Distributed Computing Application for solving Ciphers. The main focus of CloudResolve is [Black Ops II's Mob of the Dead ADFGX Cipher](http://i.imgur.com/bMTtsY5.png), with the future capability to be used for many other unsolved ciphers in the Call of Duty Zombies series.
 
 Virus Scan: https://www.virustotal.com/en/file/b43cbfb2140c1e2a3e72dce8774e74269ab12ba25bf4a34420b25d11717bfe80/analysis/1477489647/
@@ -20,7 +18,7 @@ At any given time, you can check the top returns from the whole community on the
 
 ## Windows
 
-**Download:** Currently Unavailable
+**Download:** Unavailable
 
 Simply open `CloudResolve.exe`, enter your preferred username, and click `Start`.
 
@@ -31,7 +29,7 @@ If you'd prefer to compile the application into an `.exe` yourself, [Visual Stud
 
 ## Linux / OSX
 
-**Download:** Currently Unavailable
+**Download:** Unavailable
 
 Available via [Mono](http://www.mono-project.com/download/#download-lin), follow the [Mono Setup Guide](http://www.mono-project.com/archived/guiderunning_mono_applications/), enter your preferred username, and click `Start`.
 
@@ -39,13 +37,13 @@ A Non-GUI Console Application for UNIX servers may become available at a later t
 
 ## Android
 
-**Download:** Currently Unavailable
+**Download:** Unavailable
 
 Simply open the `CloudResolve` App, enter your preferred username, and click `Start`.
 
 ## iOS
 
-**Download:** Currently Unavailable
+**Download:** Unavailable
 
 Simply open the `CloudResolve` App, enter your preferred username, and click `Start`.
 
